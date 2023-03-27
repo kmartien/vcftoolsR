@@ -2,7 +2,7 @@
 #'
 #' @description These functions filter out loci or genotypes based on the arguments
 #'     provided. Input and results file names should include the path, but no
-#'     extension. Functions return the nubmers of individuals and loci kept after
+#'     extension. Functions return the numbers of individuals and loci kept after
 #'     filtering.
 #'
 #' @param vcf.fn character string with the relative path and name of the vcf file to be filtered
@@ -11,8 +11,10 @@
 #' @param minQ minimum quality below which genotype should be removed
 #' @param meanDP minimum mean read depth below which loci should be removed
 #' @param mac minimum minor allele count below which the minor allele should not be called
-#' @param max.lmiss maximum number of missing reads per individual below which
+#' @param max.reads maximum number of reads above which a locus is removed
+#' @param max.miss maximum number of missing reads per individual below which
 #'     loci should be removed
+#' @param loci.file.name character string naming a file with names of loci to remove
 #'
 #' @return two character strings stating 1) the number of individuals filtered
 #'     out and 2) the number of loci filtered out
@@ -63,10 +65,10 @@ vcftools.monomorphic <- function(vcf.fn, res.fn){
 }
 
 #' @rdname vcftools.minDP
-vcftools.excessReads <- function(vcf.fn, res.fn, max.lmiss){
+vcftools.excessReads <- function(vcf.fn, res.fn, max.reads){
   output <- system2(command = "vcftools",
                     args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
-                             "--max-meanDP", max.lmiss, "--recode", "--recode-INFO-all"),
+                             "--max-meanDP", max.reads, "--recode", "--recode-INFO-all"),
                     stdout = TRUE, stderr = TRUE)
   return(c(output[length(output)-3],output[length(output)-1]))
 }
@@ -76,6 +78,24 @@ vcftools.removeIndels <- function(vcf.fn, res.fn){
   output <- system2(command = "vcftools",
                     args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
                              "--remove-indels", "--recode", "--recode-INFO-all"),
+                    stdout = TRUE, stderr = TRUE)
+  return(c(output[length(output)-3],output[length(output)-1]))
+}
+
+#' @rdname vcftools.minDP
+vcftools.maxMiss <- function(vcf.fn, res.fn, max.miss){
+  output <- system2(command = "vcftools",
+                    args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
+                             "--max-missing", max.miss, "--recode", "--recode-INFO-all"),
+                    stdout = TRUE, stderr = TRUE)
+  return(c(output[length(output)-3],output[length(output)-1]))
+}
+
+#' @rdname vcftools.minDP
+vcftools.rmLoci <- function(vcf.fn, res.fn, loci.file.name){
+  output <- system2(command = "vcftools",
+                    args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
+                             "--exclude-positions", loci.file.name, "--recode", "--recode-INFO-all"),
                     stdout = TRUE, stderr = TRUE)
   return(c(output[length(output)-3],output[length(output)-1]))
 }
