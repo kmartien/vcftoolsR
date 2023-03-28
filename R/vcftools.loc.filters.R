@@ -23,7 +23,7 @@
 vcftools.minDP <- function(vcf.fn, res.fn, minDP){
   output <- system2(command = "vcftools",
                     args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
-                             "--minQ ", minDP, "--recode", "--recode-INFO-all"),
+                             "--minDP ", minDP, "--recode", "--recode-INFO-all"),
                     stdout = TRUE, stderr = TRUE)
   return(c(output[length(output)-3],output[length(output)-1]))
 }
