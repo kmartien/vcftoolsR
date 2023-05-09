@@ -14,7 +14,7 @@
 #' @param max.reads maximum number of reads above which a locus is removed
 #' @param max.miss maximum number of missing reads per individual below which
 #'     loci should be removed
-#' @param loci.file.name character string naming a file with names of loci to remove
+#' @param CHROM.POS.file.name character string naming a file with names of CHROM and POS to remove
 #'
 #' @return two character strings stating 1) the number of individuals filtered
 #'     out and 2) the number of loci filtered out
@@ -92,10 +92,10 @@ vcftools.maxMiss <- function(vcf.fn, res.fn, max.miss){
 }
 
 #' @rdname vcftools.minDP
-vcftools.rmLoci <- function(vcf.fn, res.fn, loci.file.name){
+vcftools.rmPOS <- function(vcf.fn, res.fn, CHROM.POS.file.name){
   output <- system2(command = "vcftools",
                     args = c("--vcf ", paste0(vcf.fn, ".vcf"), "--out ", res.fn,
-                             "--exclude-positions", loci.file.name, "--recode", "--recode-INFO-all"),
+                             "--exclude-positions", CHROM.POS.file.name, "--recode", "--recode-INFO-all"),
                     stdout = TRUE, stderr = TRUE)
   return(c(output[length(output)-3],output[length(output)-1]))
 }

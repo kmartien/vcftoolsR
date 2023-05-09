@@ -9,7 +9,7 @@
 \alias{vcftools.excessReads}
 \alias{vcftools.removeIndels}
 \alias{vcftools.maxMiss}
-\alias{vcftools.rmLoci}
+\alias{vcftools.rmPOS}
 \title{vcftools Locus Filters}
 \usage{
 vcftools.minDP(vcf.fn, res.fn, minDP)
@@ -28,7 +28,7 @@ vcftools.removeIndels(vcf.fn, res.fn)
 
 vcftools.maxMiss(vcf.fn, res.fn, max.miss)
 
-vcftools.rmLoci(vcf.fn, res.fn, loci.file.name)
+vcftools.rmPOS(vcf.fn, res.fn, CHROM.POS.file.name)
 }
 \arguments{
 \item{vcf.fn}{character string with the relative path and name of the vcf file to be filtered}
@@ -48,7 +48,7 @@ vcftools.rmLoci(vcf.fn, res.fn, loci.file.name)
 \item{max.miss}{maximum number of missing reads per individual below which
 loci should be removed}
 
-\item{loci.file.name}{character string naming a file with names of loci to remove}
+\item{CHROM.POS.file.name}{character string naming a file with names of CHROM and POS to remove}
 }
 \value{
 two character strings stating 1) the number of individuals filtered
